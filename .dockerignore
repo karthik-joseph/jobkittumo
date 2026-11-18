@@ -1,0 +1,100 @@
+# =============================================================================
+# JobKittumo - .dockerignore
+# Keeps images small, builds fast, and secrets out of image layers.
+#
+# NOTE: Docker reads .dockerignore from the ROOT OF THE BUILD CONTEXT.
+# If your compose file uses `context: ./backend` or `context: ./frontend`,
+# copy this file into backend/ and frontend/ as well.
+# Patterns use **/ so they work at any depth.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Secrets & environment files (never bake into images)
+# -----------------------------------------------------------------------------
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/*.crt
+**/secrets
+
+# -----------------------------------------------------------------------------
+# Version control & CI
+# -----------------------------------------------------------------------------
+.git
+.gitignore
+.gitattributes
+.github
+
+# -----------------------------------------------------------------------------
+# Docker files themselves
+# -----------------------------------------------------------------------------
+**/docker-compose*.yml
+**/compose*.yml
+.dockerignore
+
+# -----------------------------------------------------------------------------
+# Python / Django
+# -----------------------------------------------------------------------------
+**/__pycache__
+**/*.py[cod]
+**/.venv
+**/venv
+**/env
+**/*.egg-info
+**/build
+**/dist
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+**/.coverage
+**/.coverage.*
+**/htmlcov
+**/coverage.xml
+**/db.sqlite3
+**/db.sqlite3-journal
+**/staticfiles
+**/media
+**/celerybeat-schedule
+**/celerybeat.pid
+
+# -----------------------------------------------------------------------------
+# Node / Next.js
+# (dependencies are installed inside the image, not copied from your machine)
+# -----------------------------------------------------------------------------
+**/node_modules
+**/.next
+**/out
+**/.turbo
+**/.vercel
+**/*.tsbuildinfo
+**/next-env.d.ts
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+
+# Frontend test output
+**/coverage
+**/test-results
+**/playwright-report
+**/blob-report
+
+# -----------------------------------------------------------------------------
+# Docs, editors, OS junk
+# -----------------------------------------------------------------------------
+docs
+**/.idea
+**/.vscode
+**/*.iml
+**/*.swp
+**/.DS_Store
+**/Thumbs.db
+
+# -----------------------------------------------------------------------------
+# Logs & temp
+# -----------------------------------------------------------------------------
+**/*.log
+**/logs
+**/tmp
+**/temp

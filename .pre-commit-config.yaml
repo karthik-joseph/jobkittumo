@@ -1,0 +1,94 @@
+# =============================================================================
+# JobKittumo - pre-commit configuration
+#
+# Setup (once per clone):
+#   pip install pre-commit        # or: brew install pre-commit
+#   pre-commit install            # installs all hook types listed below
+#   pre-commit autoupdate         # bumps every `rev:` to the latest release
+#
+# Run on everything manually:
+#   pre-commit run --all-files
+#
+# Frontend hooks need dependencies installed first:
+#   cd frontend && npm ci
+# =============================================================================
+
+minimum_pre_commit_version: "3.5.0"
+
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+  - pre-push
+
+exclude: |
+  (?x)^(
+    .*/migrations/.*|
+    frontend/package-lock\.json|
+    .*\.min\.(js|css)
+  )$
+
+repos:
+  # ---------------------------------------------------------------------------
+  # General hygiene (whole repo)
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  # ---------------------------------------------------------------------------
+  # Backend (Django): lint + format with Ruff
+  # Config lives in backend/pyproject.toml
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.5
+    hooks:
+      - id: ruff
+        name: ruff (lint)
+        files: ^backend/
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+        name: ruff (format)
+        files: ^backend/
+
+  # ---------------------------------------------------------------------------
+  # Commit messages: enforce Conventional Commits (feat:, fix:, docs:, ...)
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.5.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert]
+
+  # ---------------------------------------------------------------------------
+  # Frontend (Next.js): Prettier on commit, ESLint on push
+  # Uses the project's own installed versions from frontend/node_modules
+  # ---------------------------------------------------------------------------
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier (frontend)
+        language: system
+        entry: frontend/node_modules/.bin/prettier --write --ignore-unknown
+        files: ^frontend/.*\.(js|jsx|ts|tsx|json|css|md|mdx|yml|yaml)$
+        exclude: ^frontend/(\.next|node_modules)/
+
+      - id: eslint
+        name: eslint (frontend)
+        language: system
+        entry: npm --prefix frontend run lint
+        files: ^frontend/.*\.(js|jsx|ts|tsx)$
+        pass_filenames: false
+        stages: [pre-push]

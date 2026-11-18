@@ -1,0 +1,147 @@
+# =============================================================================
+# JobKittumo - root .gitignore (Django backend + Next.js frontend monorepo)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Secrets & environment files
+# Never commit real secrets. Keep .env.example (safe dummy values) tracked.
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+secrets/
+
+# -----------------------------------------------------------------------------
+# Python / Django (backend/)
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging / build
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+backend/staticfiles/
+backend/static_root/
+backend/media/
+media/
+
+# Celery beat schedule files
+celerybeat-schedule
+celerybeat.pid
+
+# Testing / coverage / linting caches
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.tox/
+.nox/
+.hypothesis/
+.ruff_cache/
+.mypy_cache/
+.pyre/
+
+# -----------------------------------------------------------------------------
+# Node / Next.js (frontend/)
+# -----------------------------------------------------------------------------
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Next.js build output
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Production build / misc
+/frontend/build
+.vercel
+.turbo/
+
+# Package manager debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Frontend test output
+frontend/coverage/
+frontend/test-results/
+frontend/playwright-report/
+frontend/playwright/.cache/
+frontend/blob-report/
+
+# -----------------------------------------------------------------------------
+# Docker
+# -----------------------------------------------------------------------------
+docker-compose.override.yml
+.docker/
+postgres_data/
+redis_data/
+
+# -----------------------------------------------------------------------------
+# Editors & IDEs
+# Shared VS Code settings can be committed; personal ones are ignored.
+# -----------------------------------------------------------------------------
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# -----------------------------------------------------------------------------
+# OS files
+# -----------------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# -----------------------------------------------------------------------------
+# Misc
+# -----------------------------------------------------------------------------
+*.log
+logs/
+tmp/
+temp/
+*.bak
+*.orig
+
+# -----------------------------------------------------------------------------
+# NOTE: Do NOT ignore lockfiles. Commit these so everyone gets the same versions:
+#   frontend/package-lock.json
+#   backend/requirements/*.txt (or uv.lock / poetry.lock if you adopt them)
+# -----------------------------------------------------------------------------
